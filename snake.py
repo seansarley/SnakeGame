@@ -13,7 +13,7 @@ class Tile:
         self.x = x
         self.y = y
 
-window  = tkinter.Tk()
+window = tkinter.Tk()
 window.title("Snake Game")
 window.resizable(False,False)
 
@@ -41,8 +41,17 @@ score = 0
 
 def change_direction(e):
     global velocityX, velocityY, game_over, score
-    if (game_over):
-        return
+    if (game_over and e.keysym == "r"):
+        snake.x = 5 * TILE_SIZE
+        snake.y = 5 * TILE_SIZE
+        food.x = random.randint(0, COLS-1) * TILE_SIZE
+        food.y = random.randint(0, ROWS-1) * TILE_SIZE
+        snake_body.clear()
+        velocityX = 0
+        velocityY = 0
+        game_over = False
+        score = 0
+        
     if (e.keysym == "Up" and velocityY != 1):
         velocityX = 0
         velocityY = -1
@@ -102,6 +111,7 @@ def draw():
 
     if (game_over):
         canvas.create_text(WINDOW_WIDTH/2, WINDOW_HEIGHT/2, font = "Arial 20", text = f"GAME OVER: {score}", fill = "Red")
+        canvas.create_text(WINDOW_WIDTH/2, (WINDOW_HEIGHT/2) + 35 , font = "Arial 20", text = f"Press r to Restart", fill = "Red")
     else:
         canvas.create_text(30, 20, font = "Arial 10", text = f"Score: {score}", fill = "white")
 
